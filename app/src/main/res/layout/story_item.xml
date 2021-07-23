@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/story_item_shape"
+    android:elevation="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="15dp">
+
+    <com.rishabhharit.roundedimageview.RoundedImageView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/image_shape"
+        android:src="@drawable/wall"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="80dp"
+        app:cornerRadius="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:roundedCorners="topLeft|topRight|bottomRight|bottomLeft"
+        android:id="@+id/story_image"/>
+
+
+   <TextView
+       android:id="@+id/story_title"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Title"
+       android:textSize="20sp"
+       android:layout_marginTop="17dp"
+       android:layout_marginLeft="20dp"
+
+       />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 days ago"
+        android:textColor="#B341485D"
+        android:textSize="14sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="22dp"
+        />
+
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/read_more"
+        android:layout_below="@id/story_image"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/read_story_second_shape"
+        android:src="@drawable/ic_book"
+        android:padding="12dp"
+        android:elevation="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        />
+
+    <ImageView
+        android:id="@+id/like_story"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/story_image"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toEndOf="@+id/read_more"
+        android:elevation="5dp"
+        android:padding="12dp"
+        android:src="@drawable/ic_like_clicked" />
+
+</RelativeLayout>

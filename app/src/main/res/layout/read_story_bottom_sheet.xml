@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.rishabhharit.roundedimageview.RoundedImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/image_shape"
+        android:src="@drawable/wall"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        app:cornerRadius="10dp"
+        app:roundedCorners="topLeft|topRight|bottomLeft|bottomRight"
+        android:id="@+id/story_image"/>
+
+
+    <TextView
+        android:id="@+id/story_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textSize="20sp"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/story_image"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 days ago"
+        android:textColor="#B341485D"
+        android:textSize="14sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/story_image"
+        />
+
+    <View
+        android:id="@+id/stroke"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#7F7D7D"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/story_title"/>
+
+
+    <TextView
+        android:id="@+id/story_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text of story text of story text of story text of story text of story text of story text of story text of story"
+        android:layout_below="@id/story_title"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"/>
+
+</RelativeLayout>

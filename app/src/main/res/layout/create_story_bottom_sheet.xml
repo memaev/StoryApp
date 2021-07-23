@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/create_story_btms">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CREATE STORY"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="35dp"
+        android:textSize="18sp"
+        android:id="@+id/create_story_txt"
+        />
+
+    <ImageView
+        android:id="@+id/close_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_close_24"
+        android:background="#fff"
+        android:layout_marginTop="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="35dp"/>
+
+    <EditText
+        android:id="@+id/edit_txt_title_story"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="title"
+        android:layout_below="@id/create_story_txt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="75dp"
+        android:padding="10dp"
+        />
+
+    <EditText
+        android:id="@+id/edit_txt_text_story"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="text"
+        android:layout_below="@id/edit_txt_title_story"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="75dp"
+        android:background="@drawable/edit_txt_shape"
+        android:padding="10dp"
+        android:minHeight="90dp"
+        />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CREATE STORY"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:background="@drawable/create_story_btn"
+        android:textColor="#fff"
+        android:layout_below="@id/edit_txt_text_story"
+        android:layout_marginTop="50dp"
+        android:id="@+id/create_story"/>
+
+
+</RelativeLayout>
