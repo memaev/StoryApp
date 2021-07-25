@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import dem.corp.story.R
 import dem.corp.story.StartActivity
 import dem.corp.story.databinding.FragmentProfileBinding
-import dem.corp.story.story.Story
+import dem.corp.story.models.Story
 import dem.corp.story.story.StoryAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay

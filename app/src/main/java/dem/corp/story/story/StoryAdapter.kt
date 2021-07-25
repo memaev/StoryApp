@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import dem.corp.story.R
+import dem.corp.story.models.Story
 
 internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
     FirebaseRecyclerAdapter<Story, dem.corp.story.story.StoryAdapter.viewholder>(options) {
@@ -31,9 +32,8 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
         i = itemCount - 1 - i
         holder.title.text = post.title
         val finalI = i
-        holder.read.setOnClickListener(View.OnClickListener { v ->
-            val bottomSheetDialog: RoundedBottomSheetDialog
-            bottomSheetDialog = RoundedBottomSheetDialog(v.context)
+        holder.read.setOnClickListener { v ->
+            val bottomSheetDialog = RoundedBottomSheetDialog(v.context)
             bottomSheetDialog.setContentView(R.layout.read_story_bottom_sheet)
             bottomSheetDialog.show()
             val story_text = bottomSheetDialog.findViewById<TextView>(R.id.story_txt)
@@ -50,7 +50,7 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
 
                     override fun onCancelled(error: DatabaseError) {}
                 })
-        })
+        }
     }
 
     override fun onCreateViewHolder(

@@ -69,7 +69,7 @@ dependencies {
 
     implementation 'com.firebaseui:firebase-ui-database:4.3.2'
 
-    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'com.google.android.material:material:1.4.0'
 
     implementation 'com.github.Shashank02051997:FancyToast-Android:0.1.6'
 

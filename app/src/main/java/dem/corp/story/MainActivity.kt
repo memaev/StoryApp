@@ -5,11 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
 import dem.corp.story.databinding.ActivityMainBinding
+import dem.corp.story.repository.firebase.AUTH
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,12 +35,8 @@ class MainActivity : AppCompatActivity() {
         checkAuth()
     }
     fun checkAuth() {
-        if (FirebaseAuth.getInstance().currentUser == null) startActivity(
-            Intent(
-                this@MainActivity,
-                StartActivity::class.java
-            )
-        )
+        if (AUTH.currentUser == null)
+            startActivity(Intent(this@MainActivity, StartActivity::class.java))
     }
 
 }

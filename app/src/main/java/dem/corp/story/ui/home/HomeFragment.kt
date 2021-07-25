@@ -14,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.yarolegovich.discretescrollview.DiscreteScrollView
 import dem.corp.story.R
 import dem.corp.story.databinding.FragmentHomeBinding
-import dem.corp.story.story.Story
+import dem.corp.story.models.Story
 import dem.corp.story.story.StoryAdapter
 
 class HomeFragment : Fragment() {
