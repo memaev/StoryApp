@@ -53,7 +53,7 @@ class RegisterActivity : AppCompatActivity() {
                             FirebaseDatabase.getInstance().reference.child("Users").child(
                                 FirebaseAuth.getInstance().currentUser!!.uid
                             )
-                                .child("bio").setValue("programmer")
+                                .child("bio").setValue(binding.bioEdit.text.toString())
                             startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
                         }
                     }

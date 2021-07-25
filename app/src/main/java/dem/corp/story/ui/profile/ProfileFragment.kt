@@ -1,5 +1,6 @@
 package dem.corp.story.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,15 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import dem.corp.story.R
+import dem.corp.story.StartActivity
 import dem.corp.story.databinding.FragmentProfileBinding
 import dem.corp.story.story.Story
 import dem.corp.story.story.StoryAdapter
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
     private var notificationsViewModel: ProfileViewModel? = null
@@ -28,9 +35,10 @@ class ProfileFragment : Fragment() {
     ): View? {
         notificationsViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val root2: View = inflater.inflate(R.layout.fragment_profile, container, false)
         val root: View = binding!!.root
         recyclerView = binding!!.profileRv
+
+        //get username
         FirebaseDatabase.getInstance().getReference("Users").child(
             FirebaseAuth.getInstance().currentUser!!.uid
         ).child("username").get().addOnCompleteListener { task ->
@@ -39,6 +47,14 @@ class ProfileFragment : Fragment() {
                 binding!!.profileUsername.text = name
             }
         }
+
+        //logout from account
+        binding?.profileLogout?.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            startActivity(Intent(context, StartActivity::class.java))
+        }
+
+        //get bio
         FirebaseDatabase.getInstance().getReference("Users").child(
             FirebaseAuth.getInstance().currentUser!!.uid
         ).child("bio").get().addOnCompleteListener { task ->
@@ -47,15 +63,18 @@ class ProfileFragment : Fragment() {
                 binding!!.profileBio.text = bio
             }
         }
+
+        //get likes count
         FirebaseDatabase.getInstance().getReference("Users").child(
             FirebaseAuth.getInstance().currentUser!!.uid
         ).child("likes").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val likesCount = task.result!!.value.toString()
                 binding!!.profileLikesCount.text = likesCount
-                Log.d("j", "likes counted")
             }
         }
+
+        //set query for FirebaseRecyclerAdapter
         val options: FirebaseRecyclerOptions<Story> = FirebaseRecyclerOptions.Builder<Story>()
             .setQuery(
                 FirebaseDatabase.getInstance().getReference(
@@ -76,17 +95,14 @@ class ProfileFragment : Fragment() {
             Log.d("j", "Adapter is null")
         }
         recyclerView!!.adapter = adapter
+
+        //get stories count
         FirebaseDatabase.getInstance().getReference("Users").child(
             FirebaseAuth.getInstance().currentUser!!.uid
         ).child("myStories").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val invites = task.result!!.value.toString()
-                if (!invites.isEmpty()) {
-                    val count = invites.split(",").toTypedArray().size - 1
-                    binding!!.profileStoriesCount.text = Integer.toString(count)
-                } else {
-                    binding!!.profileStoriesCount.text = "0"
-                }
+                val stories = task.result!!.value.toString()
+                binding?.profileStoriesCount?.text = stories
             }
         }
         return root

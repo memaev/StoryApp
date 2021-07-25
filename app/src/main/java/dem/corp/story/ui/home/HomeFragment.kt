@@ -49,6 +49,8 @@ class HomeFragment : Fragment() {
         createStoryBtn.setOnClickListener(View.OnClickListener {
             showBottomSheet()
             Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
+
+            //по клику на кнопку создания истории добавляем её в БД
             createStory!!.setOnClickListener {
                 if (!text!!.text.toString().isEmpty() && !text!!.text.toString().isEmpty()) {
                     val key = FirebaseDatabase.getInstance().getReference("Stories")

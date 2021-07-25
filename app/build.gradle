@@ -79,6 +79,12 @@ dependencies {
 
     implementation 'com.rishabhharit.roundedimageview:RoundedImageView:0.8.4'
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.1'
+
     implementation 'com.github.Deishelon:RoundedBottomSheet:1.0.1'
 
     implementation 'com.yarolegovich:discrete-scrollview:1.5.1'
