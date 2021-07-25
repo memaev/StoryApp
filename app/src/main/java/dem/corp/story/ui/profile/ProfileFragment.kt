@@ -18,6 +18,7 @@ import dem.corp.story.R
 import dem.corp.story.StartActivity
 import dem.corp.story.databinding.FragmentProfileBinding
 import dem.corp.story.models.Story
+import dem.corp.story.repository.firebase.AUTH
 import dem.corp.story.story.StoryAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -32,7 +33,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         notificationsViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding!!.root
@@ -50,7 +51,7 @@ class ProfileFragment : Fragment() {
 
         //logout from account
         binding?.profileLogout?.setOnClickListener{
-            FirebaseAuth.getInstance().signOut()
+            AUTH.signOut()
             startActivity(Intent(context, StartActivity::class.java))
         }
 

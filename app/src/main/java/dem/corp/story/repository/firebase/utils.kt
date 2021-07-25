@@ -1,17 +1,15 @@
 package dem.corp.story.repository.firebase
 
-import android.content.Intent
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import dem.corp.story.MainActivity
-import dem.corp.story.application.App
+import dem.corp.story.models.Story
 import dem.corp.story.models.User
-import kotlin.math.tan
+import kotlinx.coroutines.tasks.await
+
 
 fun registerUser(user: User, onSuccess: () -> Unit) {
     AUTH.createUserWithEmailAndPassword(user.email, user.password).addOnCompleteListener { task ->
         if (task.isSuccessful) {
-            USER = user.also { it.id = AUTH.currentUser!!.uid }
+            UID = AUTH.currentUser!!.uid
+            USER = user.also { it.id = UID }
             addUserToDatabase(user, onSuccess)
         } else {
             task.exception?.printStackTrace()
@@ -19,7 +17,8 @@ fun registerUser(user: User, onSuccess: () -> Unit) {
     }
 }
 
-fun addUserToDatabase(user: User, onSuccess: () -> Unit) {
+
+private fun addUserToDatabase(user: User, onSuccess: () -> Unit) {
     DATABASE_ROOT.child(NODE_USERS).child(USER.id).updateChildren(user.asHashMap()).addOnCompleteListener {
         if (it.isSuccessful){
             onSuccess()
@@ -27,30 +26,31 @@ fun addUserToDatabase(user: User, onSuccess: () -> Unit) {
             it.exception?.printStackTrace()
         }
     }
-
-
-
-//    FirebaseDatabase.getInstance().reference.child("Users").child(
-//        FirebaseAuth.getInstance().currentUser!!.uid
-//    )
-//        .child("username")
-//        .setValue(binding.usernameEdit.getText().toString())
-//    FirebaseDatabase.getInstance().reference.child("Users").child(
-//        FirebaseAuth.getInstance().currentUser!!.uid
-//    )
-//        .child("email").setValue(binding.emailEdit.getText().toString())
-//    FirebaseDatabase.getInstance().reference.child("Users").child(
-//        FirebaseAuth.getInstance().currentUser!!.uid
-//    )
-//        .child("password")
-//        .setValue(binding.passwordEdit.getText().toString())
-//    FirebaseDatabase.getInstance().reference.child("Users").child(
-//        FirebaseAuth.getInstance().currentUser!!.uid
-//    )
-//        .child("myStories").setValue(0)
-//    FirebaseDatabase.getInstance().reference.child("Users").child(
-//        FirebaseAuth.getInstance().currentUser!!.uid
-//    )
-//        .child("bio").setValue(binding.bioEdit.text.toString())
 }
+
+
+fun createStory(story: Story){
+    DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_USERNAME).get().addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            story.id = DATABASE_ROOT.child(NODE_STORIES).push().key!!
+            story.from = task.result!!.value.toString()
+            addStory(story)
+        } else {
+            task.exception?.printStackTrace()
+        }
+    }
+}
+
+
+private fun addStory(story: Story) {
+    DATABASE_ROOT.child(NODE_STORIES).child(story.id)
+      .updateChildren(story.asHashMap() as Map<String, Any>).addOnCompleteListener {
+        DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_MY_STORIES).child(story.id)
+          .updateChildren(story.asHashMap() as Map<String, Any>).addOnCompleteListener {
+
+            }
+      }
+}
+
+
 

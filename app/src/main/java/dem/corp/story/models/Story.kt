@@ -6,10 +6,10 @@ import dem.corp.story.repository.firebase.CHILD_TITLE
 
 data class Story(
         var text: String = "",
-        var from: String = "",
+        var from: String = "",  // TODO: from name or from id ?
         var title: String = "",
         var id: String = ""
-){
+) {
     fun asHashMap(): HashMap<String, String> {
         val map = HashMap<String, String>()
 

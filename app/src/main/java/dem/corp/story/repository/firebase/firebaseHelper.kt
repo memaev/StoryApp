@@ -7,6 +7,7 @@ import dem.corp.story.models.User
 
 val AUTH = FirebaseAuth.getInstance()
 val DATABASE_ROOT = FirebaseDatabase.getInstance().reference
+var UID = AUTH.currentUser?.uid?:""
 
 lateinit var USER: User
 
