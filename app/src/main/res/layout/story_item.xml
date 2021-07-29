@@ -24,16 +24,16 @@
         android:id="@+id/story_image"/>
 
 
-   <TextView
-       android:id="@+id/story_title"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="Title"
-       android:textSize="20sp"
-       android:layout_marginTop="17dp"
-       android:layout_marginLeft="20dp"
+    <TextView
+        android:id="@+id/story_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textSize="20sp"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="20dp"
 
-       />
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
         android:layout_marginBottom="20dp"
         />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/like_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,8 +70,21 @@
         android:layout_marginTop="23dp"
         android:layout_marginBottom="20dp"
         android:layout_toEndOf="@+id/read_more"
+        android:background="#fff"
         android:elevation="5dp"
         android:padding="12dp"
-        android:src="@drawable/ic_like_clicked" />
+        android:src="@drawable/ic_like" />
+
+    <ImageButton
+        android:id="@+id/comment_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/story_image"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="15dp"
+        android:layout_toStartOf="@+id/read_more"
+        android:background="#fff"
+        android:src="@drawable/ic_comment"
+        android:padding="12dp"/>
 
 </RelativeLayout>

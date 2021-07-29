@@ -1,12 +1,13 @@
 package dem.corp.story.models
 
+import dem.corp.story.repository.firebase.AUTH
 import dem.corp.story.repository.firebase.CHILD_FROM
 import dem.corp.story.repository.firebase.CHILD_TEXT
 import dem.corp.story.repository.firebase.CHILD_TITLE
 
 data class Story(
         var text: String = "",
-        var from: String = "",  // TODO: from name or from id ?
+        var from: String = AUTH.uid.toString(),
         var title: String = "",
         var id: String = ""
 ) {

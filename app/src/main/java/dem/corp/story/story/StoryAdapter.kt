@@ -1,5 +1,6 @@
 package dem.corp.story.story
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import dem.corp.story.CommentActivity
 import dem.corp.story.R
+import dem.corp.story.models.Comment
 import dem.corp.story.models.Story
 
 internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
@@ -32,6 +35,15 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
         i = itemCount - 1 - i
         holder.title.text = post.title
         val finalI = i
+
+        holder.commentBtn.setOnClickListener(View.OnClickListener { v ->
+            val intent = Intent (v.context, CommentActivity::class.java)
+            intent.putExtra("storyTitle", "story")
+            intent.putExtra("storyID", getRef(finalI).key)
+            v.context.startActivity(intent)
+        })
+
+
         holder.read.setOnClickListener { v ->
             val bottomSheetDialog = RoundedBottomSheetDialog(v.context)
             bottomSheetDialog.setContentView(R.layout.read_story_bottom_sheet)
@@ -66,10 +78,12 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
     internal class viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var title: TextView
         var read: ImageButton
+        var commentBtn: ImageButton
 
         init {
             title = itemView.findViewById(R.id.story_title)
             read = itemView.findViewById(R.id.read_more)
+            commentBtn = itemView.findViewById(R.id.comment_btn)
         }
     }
 }
