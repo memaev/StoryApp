@@ -3,6 +3,7 @@ package dem.corp.story.repository.firebase
 import dem.corp.story.models.Story
 import dem.corp.story.models.User
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 
 fun registerUser(user: User, onSuccess: () -> Unit) {
@@ -50,6 +51,32 @@ private fun addStory(story: Story) {
 
             }
       }
+}
+
+fun putLikeToStory(story: Story, onSuccess: () -> Unit = {}){
+    DATABASE_ROOT.child(NODE_USERS).child(story.from).child(CHILD_MY_STORIES).child(story.id).child(CHILD_LIKES).child(AUTH.uid!!).setValue("")
+    DATABASE_ROOT.child(NODE_STORIES).child(story.id).child(CHILD_LIKES).child(AUTH.uid!!).setValue("").addOnSuccessListener {
+        val likeRef = DATABASE_ROOT.child(NODE_USERS).child(story.from).child(CHILD_LIKES)
+        likeRef.get().addOnSuccessListener {
+            val likeCount = (try { it.value.toString().toInt() } catch (e: Exception) { 0 } + 1)
+            likeRef.setValue(likeCount).addOnSuccessListener {
+                onSuccess()
+            }
+        }
+    }
+}
+
+fun removeLikeFromStory(story: Story, onSuccess: () -> Unit = {}){
+    DATABASE_ROOT.child(NODE_USERS).child(story.from).child(CHILD_MY_STORIES).child(story.id).child(CHILD_LIKES).child(AUTH.uid!!).removeValue()
+    DATABASE_ROOT.child(NODE_STORIES).child(story.id).child(CHILD_LIKES).child(AUTH.uid!!).removeValue().addOnSuccessListener {
+        val likeRef = DATABASE_ROOT.child(NODE_USERS).child(story.from).child(CHILD_LIKES)
+        likeRef.get().addOnSuccessListener {
+            val likeCount = (try { it.value.toString().toInt() } catch (e:Exception) { e.printStackTrace(); 0 } - 1)
+            likeRef.setValue(likeCount).addOnSuccessListener {
+                onSuccess()
+            }
+        }
+    }
 }
 
 

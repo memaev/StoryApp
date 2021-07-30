@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.yarolegovich.discretescrollview.DiscreteScrollView
 import dem.corp.story.R

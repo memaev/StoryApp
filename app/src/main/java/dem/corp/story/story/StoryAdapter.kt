@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,10 @@ import dem.corp.story.CommentActivity
 import dem.corp.story.R
 import dem.corp.story.models.Comment
 import dem.corp.story.models.Story
+import dem.corp.story.repository.firebase.AUTH
+import dem.corp.story.repository.firebase.putLikeToStory
+import dem.corp.story.repository.firebase.removeLikeFromStory
+import java.lang.Exception
 
 internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
     FirebaseRecyclerAdapter<Story, dem.corp.story.story.StoryAdapter.viewholder>(options) {
@@ -36,13 +41,14 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
         holder.title.text = post.title
         val finalI = i
 
-        holder.commentBtn.setOnClickListener(View.OnClickListener { v ->
-            val intent = Intent (v.context, CommentActivity::class.java)
+        holder.commentBtn.setOnClickListener { v ->
+            val intent = Intent(v.context, CommentActivity::class.java)
             intent.putExtra("storyTitle", "story")
             intent.putExtra("storyID", getRef(finalI).key)
             v.context.startActivity(intent)
-        })
+        }
 
+        holder.updateFields()
 
         holder.read.setOnClickListener { v ->
             val bottomSheetDialog = RoundedBottomSheetDialog(v.context)
@@ -72,18 +78,63 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.story_item, parent, false)
         Log.d("j", "Adapter started")
-        return StoryAdapter.viewholder(view)
+        return viewholder(view)
     }
 
-    internal class viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var title: TextView
-        var read: ImageButton
-        var commentBtn: ImageButton
+    internal inner class viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val title: TextView = itemView.findViewById(R.id.story_title)
+        val read: ImageButton = itemView.findViewById(R.id.read_more)
+        val commentBtn: ImageButton = itemView.findViewById(R.id.comment_btn)
+        val likeBtn: ImageButton = itemView.findViewById(R.id.like_story)
+        val likesCount: TextView = itemView.findViewById(R.id.likes_count)
 
         init {
-            title = itemView.findViewById(R.id.story_title)
-            read = itemView.findViewById(R.id.read_more)
-            commentBtn = itemView.findViewById(R.id.comment_btn)
+            initOnClick()
+            updateFields()
+        }
+
+        fun updateFields(){
+            updateLikeImage()
+            updateLikesCountText()
+        }
+
+        private fun updateLikeImage() {
+            try {
+                if (getItem(layoutPosition).getLikesList().contains(AUTH.uid!!)) {
+                    setLikeIsClicked()
+                } else {
+                    setLikeIsNotClicked()
+                }
+            } catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+
+        private fun updateLikesCountText() {
+            try { likesCount.text = getItem(position).likes.keys.size.toString() } catch (e: Exception){ e.printStackTrace() }
+        }
+
+        private fun setLikeIsClicked() = likeBtn.setBackgroundResource(R.drawable.ic_like_clicked)
+
+        private fun setLikeIsNotClicked() = likeBtn.setBackgroundResource(R.drawable.ic_like)
+
+        private fun initOnClick() {
+            likeBtn.setOnClickListener {
+                val story = getItem(position)
+                if(story.getLikesList().contains(AUTH.uid!!)){
+                    removeLikeFromStory(story) {
+                        story.likes.remove(AUTH.uid!!)
+                        setLikeIsNotClicked()
+                        likesCount.text = story.likes.size.toString()
+                    }
+                }else{
+                    putLikeToStory(story) {
+                        story.likes[AUTH.uid!!] = ""
+                        setLikeIsClicked()
+                        likesCount.text = story.likes.size.toString()
+                    }
+                }
+            }
         }
     }
 }

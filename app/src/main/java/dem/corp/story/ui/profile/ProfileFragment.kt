@@ -8,22 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import dem.corp.story.R
 import dem.corp.story.StartActivity
 import dem.corp.story.databinding.FragmentProfileBinding
 import dem.corp.story.models.Story
 import dem.corp.story.repository.firebase.AUTH
 import dem.corp.story.story.StoryAdapter
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
     private var notificationsViewModel: ProfileViewModel? = null

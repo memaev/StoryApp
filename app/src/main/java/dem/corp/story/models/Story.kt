@@ -1,22 +1,23 @@
 package dem.corp.story.models
 
-import dem.corp.story.repository.firebase.AUTH
-import dem.corp.story.repository.firebase.CHILD_FROM
-import dem.corp.story.repository.firebase.CHILD_TEXT
-import dem.corp.story.repository.firebase.CHILD_TITLE
+import dem.corp.story.repository.firebase.*
 
 data class Story(
         var text: String = "",
         var from: String = AUTH.uid.toString(),
         var title: String = "",
-        var id: String = ""
+        var id: String = "",
+        var likes: HashMap<String, Any> = HashMap()
 ) {
+    fun getLikesList(): List<String> = ArrayList<String>(likes.keys)
+
     fun asHashMap(): HashMap<String, String> {
         val map = HashMap<String, String>()
 
         map[CHILD_TEXT] = this.text
         map[CHILD_FROM] = this.from
         map[CHILD_TITLE] = this.title
+        map[CHILD_ID] = this.id
 
         return map
     }

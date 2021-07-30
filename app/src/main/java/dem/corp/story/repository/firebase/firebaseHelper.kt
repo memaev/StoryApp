@@ -9,6 +9,7 @@ val AUTH = FirebaseAuth.getInstance()
 val DATABASE_ROOT = FirebaseDatabase.getInstance().reference
 var UID = AUTH.currentUser?.uid?:""
 
+
 lateinit var USER: User
 
 const val NODE_USERS = "Users"
