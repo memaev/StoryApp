@@ -1,50 +1,48 @@
 package dem.corp.story.comment
 
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import dem.corp.story.R
 import dem.corp.story.models.Comment
 
-internal class CommentsAdapter(options: FirebaseRecyclerOptions<Comment>) :
-    FirebaseRecyclerAdapter<Comment, CommentsAdapter.viewholder>(options) {
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): CommentsAdapter.viewholder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_comment, parent, false)
-        Log.d("j", "Adapter started")
-        return CommentsAdapter.viewholder(view)
+class CommentsAdapter internal constructor(context: Context?, comments: List<Comment>) :
+    RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
+    private val inflater: LayoutInflater
+    private val comments: List<Comment>
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view: View = inflater.inflate(R.layout.item_comment, parent, false)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(
-        holder: CommentsAdapter.viewholder,
-        i: Int,
-        model: Comment
-    ) {
-        holder.date.text = model.date
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val model: Comment = comments[position]
         holder.text.text = model.text
+        holder.data.text = model.date
         holder.from.text = model.username
     }
 
+    override fun getItemCount(): Int {
+        return comments.size
+    }
 
-    internal class viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var text: TextView
+        var data: TextView
         var from: TextView
-        var date : TextView
 
         init {
-            text = itemView.findViewById(R.id.text2s)
-            from = itemView.findViewById(R.id.username)
-            date = itemView.findViewById(R.id.time_and_data)
+            text = view.findViewById(R.id.text2s)
+            data = view.findViewById(R.id.time_and_data)
+            from = view.findViewById(R.id.username)
         }
     }
 
+    init {
+        this.comments = comments
+        inflater = LayoutInflater.from(context)
+    }
 }

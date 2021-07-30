@@ -43,7 +43,7 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
 
         holder.commentBtn.setOnClickListener { v ->
             val intent = Intent(v.context, CommentActivity::class.java)
-            intent.putExtra("storyTitle", "story")
+            intent.putExtra("storyTitle", post.title)
             intent.putExtra("storyID", getRef(finalI).key)
             v.context.startActivity(intent)
         }
