@@ -1,6 +1,8 @@
 package dem.corp.story.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,8 @@ import dem.corp.story.databinding.FragmentHomeBinding
 import dem.corp.story.models.Story
 import dem.corp.story.repository.firebase.createStory
 import dem.corp.story.story.StoryAdapter
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HomeFragment : Fragment() {
     private var homeViewModel: HomeViewModel? = null
@@ -48,7 +52,8 @@ class HomeFragment : Fragment() {
         recView.adapter = adapter
         createStoryBtn.setOnClickListener {
             showBottomSheet()
-            Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
+
+            //Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
             //по клику на кнопку создания истории добавляем её в БД
             createStoryBtn2.setOnClickListener {
                 if (!text.text.toString().isEmpty() && !text.text.toString().isEmpty()) {
@@ -64,9 +69,12 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun createStory() {
 
-        val story = Story(text = text.text.toString(), title = title.text.toString())
+        val date = SimpleDateFormat("dd.MM.yyyy hh:mm").format(Date())
+        Log.d("Get date", "createStory: $date")
+        val story = Story(text = text.text.toString(), title = title.text.toString(), date = date)
         createStory(story)
 
         btmSh.dismiss()
