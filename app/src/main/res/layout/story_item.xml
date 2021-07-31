@@ -69,10 +69,8 @@
         android:layout_below="@id/story_image"
         android:layout_marginStart="15dp"
         android:layout_marginTop="23dp"
-        android:layout_marginBottom="20dp"
         android:layout_toEndOf="@+id/read_more"
         android:background="#fff"
-        android:elevation="5dp"
         android:padding="12dp"
         tools:src="@drawable/ic_like" />
 

@@ -20,13 +20,13 @@ import dem.corp.story.CommentActivity
 import dem.corp.story.R
 import dem.corp.story.models.Comment
 import dem.corp.story.models.Story
-import dem.corp.story.repository.firebase.AUTH
-import dem.corp.story.repository.firebase.putLikeToStory
-import dem.corp.story.repository.firebase.removeLikeFromStory
+import dem.corp.story.repository.firebase.*
 import java.lang.Exception
 
 internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
+
     FirebaseRecyclerAdapter<Story, dem.corp.story.story.StoryAdapter.viewholder>(options) {
+
     override fun getItem(position: Int): Story {
         return super.getItem(itemCount - 1 - position)
     }
@@ -57,13 +57,17 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
             val story_text = bottomSheetDialog.findViewById<TextView>(R.id.story_txt)
             val story_title = bottomSheetDialog.findViewById<TextView>(R.id.story_title)
             val key = getRef(finalI).key
+            var e = true
             FirebaseDatabase.getInstance().getReference("Stories").child(key!!)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        val text = snapshot.child("text").value.toString()
-                        val title = snapshot.child("title").value.toString()
-                        story_text!!.text = text
-                        story_title!!.text = title
+                        if (e){
+                            val text = snapshot.child("text").value.toString()
+                            val title = snapshot.child("title").value.toString()
+                            story_text!!.text = text
+                            story_title!!.text = title
+                            e = false
+                        }
                     }
 
                     override fun onCancelled(error: DatabaseError) {}
@@ -118,23 +122,83 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
 
         private fun setLikeIsNotClicked() = likeBtn.setBackgroundResource(R.drawable.ic_like)
 
+        private fun sendNotification(position: Int, key:String){
+            var e = true
+            DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_USERNAME)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot1: DataSnapshot) {
+                        if (e){
+                            val username = snapshot1.getValue().toString()
+                            var a = true
+                            DATABASE_ROOT.child("Stories").child(key).child("from")
+                                .addValueEventListener(object : ValueEventListener {
+                                    override fun onDataChange(snapshot2: DataSnapshot) {
+                                        if (a){
+                                            val from = snapshot2.getValue().toString()
+                                            val map = HashMap<String, String> ()
+                                            map.put("from", from)
+                                            map.put("username", username)
+                                            map.put("storyID", key)
+                                            map.put("type", "like")
+                                            DATABASE_ROOT.child("Users").child(UID).child("notifications").child(key).setValue(map)
+                                            a = false
+                                        }
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {}
+                                })
+                            e = false
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+//            DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_USERNAME).addValueEventListener(ValueEventListener)
+//            DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_USERNAME).get().addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    val username = task.result.toString()
+//                    DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_USERNAME).get().addOnCompleteListener { task2 ->
+//                        if (task2.isSuccessful){
+//                            val from = task2.result.toString()
+//                            val map = HashMap<String, String> ()
+//                            map.put("from", from)
+//                            map.put("username", username)
+//                            map.put("storyID", key)
+//                            map.put("type", "like")
+//                            DATABASE_ROOT.child("Users").child(UID).child("notifications").child(key).setValue(map)
+//                        }
+//                    }
+//                } else {
+//                    task.exception?.printStackTrace()
+//                }
+//            }
+        }
+
+        private fun deleteNotification(position: Int, key:String){
+            DATABASE_ROOT.child("Users").child(UID).child("notifications").child(key).setValue(null)
+        }
+
         private fun initOnClick() {
             likeBtn.setOnClickListener {
                 val story = getItem(position)
+                val key = getRef(itemCount-1-position).key.toString()
                 if(story.getLikesList().contains(AUTH.uid!!)){
                     removeLikeFromStory(story) {
                         story.likes.remove(AUTH.uid!!)
                         setLikeIsNotClicked()
+                        deleteNotification(position, key)
                         likesCount.text = story.likes.size.toString()
                     }
                 }else{
                     putLikeToStory(story) {
                         story.likes[AUTH.uid!!] = ""
                         setLikeIsClicked()
+                        sendNotification(position, key)
                         likesCount.text = story.likes.size.toString()
                     }
                 }
             }
         }
+
     }
 }

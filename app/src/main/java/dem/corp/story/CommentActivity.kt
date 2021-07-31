@@ -28,16 +28,6 @@ class CommentActivity : AppCompatActivity() {
         binding = ActivityCommentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val options: FirebaseRecyclerOptions<Comment> = FirebaseRecyclerOptions.Builder<Comment>()
-            .setQuery(
-                FirebaseDatabase.getInstance().getReference(
-                    "Stories/" + intent.getStringExtra("storyID") +  "/comments"
-                ),
-                Comment::class.java
-            )
-            .build()
-
-
         val storyID = intent.getStringExtra("storyID")
 
         initializeRecView()
