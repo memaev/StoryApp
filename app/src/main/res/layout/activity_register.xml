@@ -3,84 +3,119 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:background="@drawable/background_start_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/username_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint ="username"
-        android:layout_marginLeft="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="@drawable/edit_txt_register_shape"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="100dp"/>
-
-    <EditText
-        android:id="@+id/email_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="email"
-        android:layout_marginLeft="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="@drawable/edit_txt_register_shape"
-        android:layout_marginRight="30dp"
-        android:layout_below="@id/username_edit"
-        android:layout_marginTop="25dp"
-        />
-
-    <EditText
-        android:id="@+id/password_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="password"
-        android:layout_marginLeft="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="@drawable/edit_txt_register_shape"
-        android:layout_marginRight="30dp"
-        android:layout_below="@id/email_edit"
-        android:layout_marginTop="25dp"
-        />
-
-    <EditText
-        android:id="@+id/bio_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="bio"
-        android:layout_marginLeft="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="@drawable/edit_txt_register_shape"
-        android:layout_marginRight="30dp"
-        android:layout_below="@id/password_edit"
-        android:layout_marginTop="25dp"
-        />
-
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REGISTER"
-        android:background="@drawable/sign_up_btn_shape"
-        android:textColor="#fff"
-        android:paddingRight="80dp"
-        android:paddingLeft="80dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/bio_edit"
-        android:layout_marginTop="50dp"
-        android:id="@+id/register_btn"
-        />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-10dp"
+            android:text="Hello,"
+            android:textColor="@color/white"
+            android:textSize="25dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up!"
+            android:textColor="@color/white"
+            android:textSize="80dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/username_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/edit_txt_register_shape"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:hint="username"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp" />
+
+        <EditText
+            android:id="@+id/email_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/username_edit"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/edit_txt_register_shape"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:hint="email"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp" />
+
+        <EditText
+            android:id="@+id/password_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/email_edit"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/edit_txt_register_shape"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:hint="password"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp" />
+
+        <EditText
+            android:id="@+id/bio_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/password_edit"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/edit_txt_register_shape"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:hint="bio"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp" />
+
+        <Button
+            android:id="@+id/register_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/sign_up_btn_shape"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:text="Sign up"
+            android:textColor="#fff" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>
