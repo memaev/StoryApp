@@ -38,6 +38,7 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
         return super.getItem(itemCount - 1 - position)
     }
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(
