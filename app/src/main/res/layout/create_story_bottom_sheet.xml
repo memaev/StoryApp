@@ -36,22 +36,22 @@
         android:padding="10dp"
         />
 
+
     <EditText
         android:id="@+id/edit_txt_text_story"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="text"
         android:layout_below="@id/edit_txt_title_story"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
         android:layout_marginLeft="75dp"
+        android:layout_marginTop="29dp"
         android:background="@drawable/edit_txt_shape"
-        android:padding="10dp"
+        android:hint="text"
         android:minHeight="90dp"
-        />
-
+        android:padding="10dp" />
 
     <Button
+        android:id="@+id/create_story"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="CREATE STORY"
@@ -59,9 +59,20 @@
         android:layout_marginRight="36dp"
         android:background="@drawable/create_story_btn"
         android:textColor="#fff"
-        android:layout_below="@id/edit_txt_text_story"
+        android:layout_below="@id/story_image"
+        android:layout_marginTop="50dp"/>
+
+    <ImageView
+        android:id="@+id/story_image"
         android:layout_marginTop="50dp"
-        android:id="@+id/create_story"/>
+        android:layout_width="match_parent"
+        android:layout_height="221.879dp"
+        android:layout_below="@+id/edit_txt_text_story"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:background="@drawable/wall" />
 
 
 </RelativeLayout>

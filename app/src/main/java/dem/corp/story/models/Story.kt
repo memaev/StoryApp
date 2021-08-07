@@ -8,7 +8,8 @@ data class Story(
     var title: String = "",
     var text: String = "",
     var date: String = "",
-    var id: String = ""
+    var id: String = "",
+    var imageUrl: String = ""
 ) {
     fun getLikesList(): List<String> = ArrayList<String>(likes.keys)
 
@@ -20,6 +21,10 @@ data class Story(
         map[CHILD_FROM] = this.from
         map[CHILD_DATE] = this.date
         map[CHILD_ID] = this.id
+
+        if (imageUrl.isNotEmpty() && imageUrl != ""){
+            map[CHILD_STORY_IMAGE] = this.imageUrl
+        }
 
         return map
     }

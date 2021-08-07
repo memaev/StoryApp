@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -129,6 +131,7 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
         val commentBtn: ImageButton = itemView.findViewById(R.id.comment_btn)
         val likeBtn: ImageButton = itemView.findViewById(R.id.like_story)
         val likesCount: TextView = itemView.findViewById(R.id.likes_count)
+        val storyImage: ImageView = itemView.findViewById(R.id.story_image)
 
         init {
             initOnClick()
@@ -138,6 +141,17 @@ internal class StoryAdapter(options: FirebaseRecyclerOptions<Story>) :
         fun updateFields() {
             updateLikeImage()
             updateLikesCountText()
+            updateStoryImage()
+        }
+
+        private fun updateStoryImage() {
+            try {
+                val url = getItem(layoutPosition).imageUrl
+                if (url != "")
+                    Glide.with(itemView).load(url).into(storyImage)
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
         }
 
         private fun updateLikeImage() {
