@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/item_shape">
+    android:background="@drawable/item_shape"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <ImageView
         android:id="@+id/profile_image"
@@ -17,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
         android:orientation="vertical"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/profile_image"

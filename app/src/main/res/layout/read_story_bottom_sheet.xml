@@ -3,15 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg">
+
+    <TextView
+        android:id="@+id/story_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="17dp"
+        android:text="Ivan Ivanov"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/dialog_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_close_24"
+        android:background="#fff"
+        android:padding="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"/>
 
     <com.rishabhharit.roundedimageview.RoundedImageView
         android:id="@+id/story_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:background="@drawable/image_shape"
         android:scaleType="centerCrop"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/story_from"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
         android:src="@drawable/wall"
         app:cornerRadius="10dp"
         app:roundedCorners="topLeft|topRight|bottomLeft|bottomRight" />

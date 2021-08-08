@@ -37,7 +37,10 @@ class CommentActivity : AppCompatActivity() {
         binding.nameTxt.text = storyTitle
 
         binding.backFromCommentsBtn.setOnClickListener {
-            startActivity(Intent (applicationContext, MainActivity::class.java))
+            if (intent.getIntExtra("fromNot", 0) == 0)
+                startActivity(Intent (applicationContext, MainActivity::class.java))
+            else
+                onBackPressed()
         }
 
         binding.refreshComments.setOnRefreshListener {
@@ -55,6 +58,7 @@ class CommentActivity : AppCompatActivity() {
                     val map = HashMap<String, String>()
                     val date = Date()
                     val formatForDate = SimpleDateFormat("dd.MM.yyyy hh:mm")
+
                     DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_USERNAME).get().addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             val username = task.result!!.value.toString()
@@ -63,6 +67,9 @@ class CommentActivity : AppCompatActivity() {
                             map.put("text", commentText)
                             map.put("date", formatForDate.format(date))
                             DATABASE_ROOT.child("Stories").child(storyID).child("comments").child(commentID).setValue(map)
+                            val storyID = intent.getStringExtra("storyID").toString()
+                            if (!intent.getStringExtra("storyFrom").equals(UID))
+                                sendNotification(storyID, formatForDate.format(date), commentText)
                             initializeRecView()
                         } else {
                             task.exception?.printStackTrace()
@@ -107,4 +114,41 @@ class CommentActivity : AppCompatActivity() {
             })
         }
     }
+
+    private fun sendNotification(key:String, date:String, commentText:String){
+        var e = true
+        val notificationID =  DATABASE_ROOT.child(NODE_STORIES).push().key!!
+        DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_USERNAME)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot1: DataSnapshot) {
+                    if (e){
+                        val username = snapshot1.getValue().toString()
+                        var a = true
+                        DATABASE_ROOT.child("Stories").child(key).child("from")
+                            .addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshot2: DataSnapshot) {
+                                    if (a){
+                                        val from = snapshot2.getValue().toString()
+                                        val map = HashMap<String, String> ()
+                                        map.put("from", from)
+                                        map.put("username", username)
+                                        map.put("storyID", key)
+                                        map.put("type", "comment")
+                                        map.put("date",  date)
+                                        map.put("text", commentText)
+                                        DATABASE_ROOT.child("Users").child(UID).child("notifications").child(notificationID).setValue(map)
+                                        a = false
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {}
+                            })
+                        e = false
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+    }
+
 }

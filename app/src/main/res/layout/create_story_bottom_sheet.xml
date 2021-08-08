@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/create_story_btms">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/create_story_btms"
+    android:background="@drawable/dialog_bg"
+    android:paddingBottom="13dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,6 +36,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="75dp"
+        android:background="@drawable/edit_txt_shape"
         android:padding="10dp"
         />
 
@@ -60,19 +64,22 @@
         android:background="@drawable/create_story_btn"
         android:textColor="#fff"
         android:layout_below="@id/story_image"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="40dp"/>
 
-    <ImageView
+    <com.rishabhharit.roundedimageview.RoundedImageView
         android:id="@+id/story_image"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="221.879dp"
+        android:layout_height="220dp"
         android:layout_below="@+id/edit_txt_text_story"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="36dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginEnd="75dp"
         android:layout_marginRight="36dp"
-        android:background="@drawable/wall" />
+        android:src="@drawable/wall"
+        android:scaleType="centerCrop"
+        app:cornerRadius="6dp"
+        app:roundedCorners="topRight|topLeft|bottomLeft|bottomRight"/>
 
 
 </RelativeLayout>

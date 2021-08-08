@@ -4,7 +4,7 @@ import dem.corp.story.repository.firebase.*
 
 data class Story(
     var likes: HashMap<String, Any> = HashMap(),
-    var from: String = AUTH.uid.toString(),
+    var from: String="",
     var title: String = "",
     var text: String = "",
     var date: String = "",

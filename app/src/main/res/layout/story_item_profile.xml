@@ -13,10 +13,10 @@
     <com.rishabhharit.roundedimageview.RoundedImageView
         android:id="@+id/story_image"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="240dp"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/image_shape"
         android:scaleType="centerCrop"
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/story_image"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/read_story_second_shape"
         android:elevation="5dp"
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/story_image"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="18dp"
         android:layout_toEndOf="@+id/read_more"
         android:background="#fff"
         android:padding="12dp"
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/story_image"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="18dp"
         android:layout_marginBottom="20dp"
         android:layout_toEndOf="@+id/like_story"
         android:padding="12dp"
@@ -91,11 +91,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/story_image"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="15dp"
         android:layout_toStartOf="@+id/read_more"
         android:background="#fff"
         android:padding="12dp"
-        android:src="@drawable/ic_comment" />
+        android:src="@drawable/ic_like" />
 
 </RelativeLayout>

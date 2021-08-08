@@ -12,17 +12,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.yarolegovich.discretescrollview.DiscreteScrollView
+import dem.corp.story.R
 import dem.corp.story.StartActivity
 import dem.corp.story.databinding.FragmentProfileBinding
 import dem.corp.story.models.Story
 import dem.corp.story.repository.firebase.AUTH
+import dem.corp.story.repository.firebase.DATABASE_ROOT
+import dem.corp.story.repository.firebase.UID
 import dem.corp.story.story.StoryAdapter
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProfileFragment : Fragment() {
     private var notificationsViewModel: ProfileViewModel? = null
     private var binding: FragmentProfileBinding? = null
-    private var recyclerView: RecyclerView? = null
+    private var recyclerView: DiscreteScrollView? = null
     private var adapter: StoryAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,88 +42,117 @@ class ProfileFragment : Fragment() {
         val root: View = binding!!.root
         recyclerView = binding!!.profileRv
 
-        //get username
-        FirebaseDatabase.getInstance().getReference("Users").child(
-            FirebaseAuth.getInstance().currentUser!!.uid
-        ).child("username").get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val name = task.result!!.value.toString()
-                binding!!.profileUsername.text = name
-            }
-        }
-
         //logout from account
         binding?.profileLogout?.setOnClickListener{
             AUTH.signOut()
             startActivity(Intent(context, StartActivity::class.java))
         }
 
-        //get bio
-        FirebaseDatabase.getInstance().getReference("Users").child(
-            FirebaseAuth.getInstance().currentUser!!.uid
-        ).child("bio").get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val bio = task.result!!.value.toString()
-                binding!!.profileBio.text = bio
-            }
+        binding?.refreshProfile?.setOnRefreshListener {
+            refreshProfile()
         }
 
-        //get likes count
-        FirebaseDatabase.getInstance().getReference("Users").child(
-            FirebaseAuth.getInstance().currentUser!!.uid
-        ).child("likes").get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val likesCount = task.result!!.value.toString()
-                binding!!.profileLikesCount.text = likesCount
-            }
-        }
+        refreshProfile()
 
-        //set query for FirebaseRecyclerAdapter
-        val options: FirebaseRecyclerOptions<Story> = FirebaseRecyclerOptions.Builder<Story>()
-            .setQuery(
-                FirebaseDatabase.getInstance().getReference(
-                    "Users/" + FirebaseAuth.getInstance().currentUser!!
-                        .uid + "/myStories"
-                ),
-                Story::class.java
-            )
-            .build()
-        val linearLayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        linearLayoutManager.reverseLayout = true
-        linearLayoutManager.stackFromEnd = true
-        Log.d("j", "Starting adapter...")
-        recyclerView!!.layoutManager = linearLayoutManager
-        adapter = StoryAdapter(options)
-        if (adapter == null) {
-            Log.d("j", "Adapter is null")
-        }
-        recyclerView!!.adapter = adapter
+        initializeRecView()
 
-        //get stories count
-        FirebaseDatabase.getInstance().getReference("Users").child(
-            FirebaseAuth.getInstance().currentUser!!.uid
-        ).child("myStories").get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val stories = task.result!!.value.toString()
-                binding?.profileStoriesCount?.text = stories
+        val stories: ArrayList<Story> = ArrayList<Story>()
+        var e = true
+        DATABASE_ROOT.child("Users").child(UID).child("myStories").addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (e) {
+                    for (snapshot1: DataSnapshot in snapshot.children){
+                        val date = snapshot1.child("date").value.toString()
+                        val title = snapshot1.child("title").value.toString()
+                        val from = snapshot1.child("from").value.toString()
+                        val text = snapshot1.child("text").value.toString()
+                        val id = snapshot1.child("id").value.toString()
+                        val imageUrl = snapshot1.child("imageUrl").value.toString()
+                        val likes: HashMap<String, Any> = HashMap<String, Any> ()
+                        for (snapshot2: DataSnapshot in snapshot1.child("likes").children){
+                            likes.put(snapshot2.key.toString(), "")
+                        }
+
+                        stories.add(Story(likes, from, title, text, date, id, imageUrl))
+
+                    }
+
+                    adapter = StoryAdapter(context, stories, true)
+                    recyclerView?.adapter = adapter
+                    e = false
+                    Log.d("storiesCount", "ajsc: ${stories.size}")
+                }
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
         return root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        adapter?.startListening()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        adapter?.stopListening()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    fun refreshProfile(){
+        var a = true
+        DATABASE_ROOT.child("Users").child(UID)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (a) {
+                        val username = snapshot.child("username").value.toString()
+                        val bio = snapshot.child("bio").value.toString()
+                        val likes = snapshot.child("likes").value.toString()
+                        val storiesCount = snapshot.child("storiesCount").value.toString()
+
+                        binding!!.profileUsername.text = username
+                        binding!!.profileBio.text = bio
+                        binding!!.profileLikesCount.text = likes
+                        binding!!.profileStoriesCount.text = storiesCount
+
+                        a = false
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+
+        initializeRecView()
+    }
+
+    fun initializeRecView(){
+
+        val stories: ArrayList<Story> = ArrayList<Story>()
+        var e = true
+        DATABASE_ROOT.child("Users").child(UID).child("myStories").addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (e) {
+                    for (snapshot1: DataSnapshot in snapshot.children){
+                        val date = snapshot1.child("date").value.toString()
+                        val title = snapshot1.child("title").value.toString()
+                        val from = snapshot1.child("from").value.toString()
+                        val text = snapshot1.child("text").value.toString()
+                        val id = snapshot1.child("id").value.toString()
+                        val imageUrl = snapshot1.child("imageUrl").value.toString()
+                        val likes: HashMap<String, Any> = HashMap<String, Any> ()
+                        for (snapshot2: DataSnapshot in snapshot1.child("likes").children){
+                            likes.put(snapshot2.key.toString(), "")
+                        }
+
+                        stories.add(Story(likes, from, title, text, date, id, imageUrl))
+                    }
+
+                    adapter = StoryAdapter(context, stories, true)
+                    recyclerView?.adapter = adapter
+                    binding?.refreshProfile?.isRefreshing = false
+                    e = false
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 }

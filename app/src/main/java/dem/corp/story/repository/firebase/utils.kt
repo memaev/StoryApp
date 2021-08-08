@@ -33,18 +33,9 @@ private fun addUserToDatabase(user: User, onSuccess: () -> Unit) {
 
 
 fun createStory(story: Story, uri: Uri?) {
-
-
-    DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_USERNAME).get()
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                story.id = DATABASE_ROOT.child(NODE_STORIES).push().key!!
-                story.from = task.result!!.value.toString()
-                addStory(story, uri)
-            } else {
-                task.exception?.printStackTrace()
-            }
-        }
+    story.id = DATABASE_ROOT.child(NODE_STORIES).push().key!!
+    story.from = UID
+    addStory(story, uri)
 }
 
 
@@ -75,6 +66,7 @@ private fun addStory(story: Story, uri: Uri?) {
 }
 
 fun putLikeToStory(story: Story, onSuccess: () -> Unit = {}) {
+
     DATABASE_ROOT.child(NODE_USERS).child(story.from).child(CHILD_MY_STORIES).child(story.id)
         .child(CHILD_LIKES).child(AUTH.uid!!).setValue("")
     DATABASE_ROOT.child(NODE_STORIES).child(story.id).child(CHILD_LIKES).child(AUTH.uid!!)
@@ -91,6 +83,9 @@ fun putLikeToStory(story: Story, onSuccess: () -> Unit = {}) {
                 }
             }
         }
+
+    if (story.from.equals(UID))
+        DATABASE_ROOT.child("Users").child(UID).child("myStories").child(story.id).child("likes").child(UID).setValue("")
 }
 
 fun removeLikeFromStory(story: Story, onSuccess: () -> Unit = {}) {
