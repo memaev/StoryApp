@@ -2,6 +2,7 @@ package dem.corp.story
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -128,15 +129,16 @@ class CommentActivity : AppCompatActivity() {
                             .addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(snapshot2: DataSnapshot) {
                                     if (a){
-                                        val from = snapshot2.getValue().toString()
+                                        val from2 = snapshot2.value.toString()
+                                        Log.d("storiesCount", from2)
                                         val map = HashMap<String, String> ()
-                                        map.put("from", from)
+                                        map.put("from", UID)
                                         map.put("username", username)
                                         map.put("storyID", key)
                                         map.put("type", "comment")
                                         map.put("date",  date)
                                         map.put("text", commentText)
-                                        DATABASE_ROOT.child("Users").child(UID).child("notifications").child(notificationID).setValue(map)
+                                        DATABASE_ROOT.child("Users").child(from2).child("notifications").child(notificationID).setValue(map)
                                         a = false
                                     }
                                 }

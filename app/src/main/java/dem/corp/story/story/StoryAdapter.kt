@@ -234,14 +234,14 @@ class StoryAdapter internal constructor(context: Context?, stories: List<Story>,
                                             val formatForDate = SimpleDateFormat("dd.MM.yyyy hh:mm")
                                             val from = snapshot2.getValue().toString()
                                             val map = HashMap<String, String>()
-                                            map.put("from", from)
+                                            map.put("from", UID)
                                             map.put("username", username)
                                             map.put("storyID", key)
                                             map.put("type", "like")
                                             map.put("date", formatForDate.format(date))
                                             map.put("text", "like")
 
-                                            DATABASE_ROOT.child("Users").child(UID)
+                                            DATABASE_ROOT.child("Users").child(from)
                                                 .child("notifications").child(key).setValue(map)
                                             a = false
                                         }
@@ -257,8 +257,8 @@ class StoryAdapter internal constructor(context: Context?, stories: List<Story>,
                 })
         }
 
-        private fun deleteNotification(position: Int, key: String) {
-            DATABASE_ROOT.child("Users").child(UID).child("notifications").child(key).setValue(null)
+        private fun deleteNotification(position: Int, key: String, from: String) {
+            DATABASE_ROOT.child("Users").child(from).child("notifications").child(key).setValue(null)
         }
 
         private fun initOnClick() {
@@ -270,7 +270,7 @@ class StoryAdapter internal constructor(context: Context?, stories: List<Story>,
                         story.likes.remove(AUTH.uid!!)
                         setLikeIsNotClicked()
                         if (!story.from.equals(UID))
-                            deleteNotification(position, key)
+                            deleteNotification(position, key, story.from)
                         likesCount.text = story.likes.size.toString()
                     }
                 } else {
