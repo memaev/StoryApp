@@ -62,11 +62,11 @@
 
     <ImageButton
         android:id="@+id/like_story"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_below="@id/story_image"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="18dp"
+        android:layout_alignTop="@+id/comment_btn"
         android:layout_toEndOf="@+id/read_more"
         android:background="#fff"
         android:padding="12dp"
@@ -88,14 +88,14 @@
 
     <ImageButton
         android:id="@+id/comment_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_below="@id/story_image"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="15dp"
         android:layout_toStartOf="@+id/read_more"
         android:background="#fff"
         android:padding="12dp"
-        android:src="@drawable/ic_like" />
+        android:src="@drawable/ic_comment" />
 
 </RelativeLayout>
