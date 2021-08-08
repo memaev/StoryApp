@@ -99,6 +99,7 @@ class HomeFragment : Fragment() {
             createStoryBtn2.setOnClickListener {
                 if (!text.text.toString().isEmpty() && !text.text.toString().isEmpty()) {
                     createStory()
+                    dialog.dismiss()
                 } else {
                     Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
                 }

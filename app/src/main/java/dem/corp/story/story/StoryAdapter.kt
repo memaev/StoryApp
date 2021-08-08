@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.provider.Contacts
+import android.renderscript.Sampler
 import android.util.Log
 import android.view.*
 import android.widget.ImageButton
@@ -93,6 +94,7 @@ class StoryAdapter internal constructor(context: Context?, stories: List<Story>,
             val storyDate = dialog.findViewById<TextView>(R.id.tv_btm_shed_date)
             val storyFrom = dialog.findViewById<TextView>(R.id.story_from)
             val storyClose = dialog.findViewById<ImageButton>(R.id.dialog_close)
+            val storyImage = dialog.findViewById<ImageView>(R.id.story_image)
 
             dialog.show()
             dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -104,6 +106,10 @@ class StoryAdapter internal constructor(context: Context?, stories: List<Story>,
                 dialog.dismiss()
             }
 
+
+
+            Glide.with(holder.itemView).load(model.imageUrl).into(storyImage)
+
             val key = model.id.toString()
             var e = true
             FirebaseDatabase.getInstance().getReference("Stories").child(key!!)
@@ -113,6 +119,23 @@ class StoryAdapter internal constructor(context: Context?, stories: List<Story>,
                             val text = snapshot.child("text").value.toString()
                             val title = snapshot.child("title").value.toString()
                             val date = snapshot.child("date").value.toString()
+                            val from = snapshot.child("from").value.toString()
+
+                            var t = true
+                            DATABASE_ROOT.child("Users").child(from).child("username").addValueEventListener(object: ValueEventListener{
+                                override fun onDataChange(snapshot2: DataSnapshot) {
+                                    if (t){
+                                        val username = snapshot2.value.toString()
+                                        storyFrom!!.text = username
+                                        t = false
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+
+                                }
+
+                            })
                             storyText!!.text = text
                             storyTitle!!.text = title
                             Log.d("TAG", date)
