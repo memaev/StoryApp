@@ -75,9 +75,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
-            android:layout_gravity="center"
             android:background="@drawable/sign_up_btn_shape"
             android:paddingLeft="80dp"
+            android:layout_gravity="center_horizontal"
             android:paddingRight="80dp"
             android:text="LOG IN"
             android:textColor="#fff" />
