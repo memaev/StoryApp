@@ -32,6 +32,7 @@ const val CHILD_PASSWORD = "password"
 const val CHILD_EMAIL = "email"
 const val CHILD_LIKES = "likes"
 const val CHILD_BIO = "bio"
+const val CHILD_STORIES_COUNT = "storiesCount"
 
 fun initFirebase() {
 

@@ -32,6 +32,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="17dp"
         android:text="Title"
+        android:textColor="@color/text_color"
         android:textSize="20sp"
         />
 
@@ -41,7 +42,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="40dp"
-        android:textColor="#B341485D"
+        android:textColor="@color/date_color_text"
         android:textSize="14sp"
         android:id="@+id/tv_story_date"
         tools:text="2 days ago" />
@@ -70,6 +71,7 @@
         android:layout_toEndOf="@+id/read_more"
         android:background="#fff"
         android:padding="12dp"
+        app:tint="@color/text_color"
         tools:src="@drawable/ic_like" />
 
     <TextView
@@ -82,7 +84,7 @@
         android:layout_marginBottom="20dp"
         android:layout_toEndOf="@+id/like_story"
         android:padding="12dp"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:textStyle="bold"
         tools:text="101" />
 
@@ -94,7 +96,8 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="15dp"
         android:layout_toStartOf="@+id/read_more"
-        android:background="#fff"
+        android:background="@color/white_background_color"
         android:padding="12dp"
-        android:src="@drawable/ic_comment" />
+        android:src="@drawable/ic_comment"
+        app:tint="@color/text_color" />
 </RelativeLayout>

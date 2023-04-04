@@ -30,14 +30,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Ivan Ivanov"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:textSize="16sp"/>
         <TextView
             android:id="@+id/time_and_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="01.01.2021, 12:00"
-            android:textColor="#000"
+            android:textColor="@color/text_color"
             android:textSize="14sp"
             />
     </LinearLayout>
@@ -47,8 +47,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
-        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/text_color"
         android:textSize="14sp"
-        android:textColor="@color/black"
         tools:text="There is a lot of text here. Text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text." />
 </RelativeLayout>

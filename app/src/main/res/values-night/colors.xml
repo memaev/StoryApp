@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="main_background"> #1B3340 </color>
+    <color name="bottom_nav_color">#1B3340</color>
+    <color name="text_color">#fff</color>
+    <color name="date_color_text">#fff</color>
+    <color name="white_background_color">#1E3846</color>
+    <color name="divider_color">#fff</color>
+
+</resources>

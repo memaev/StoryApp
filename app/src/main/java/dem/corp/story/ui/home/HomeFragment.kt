@@ -135,16 +135,12 @@ class HomeFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     private fun createStory() {
 
-        var e = true
-        DATABASE_ROOT.child(NODE_USERS).child(UID).child("storiesCount").addValueEventListener(object: ValueEventListener{
+        DATABASE_ROOT.child(NODE_USERS).child(UID).child("storiesCount").addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (e){
-                    var res = snapshot.value.toString()
-                    var storiesCount = res.toInt()
-                    storiesCount+=1
-                    DATABASE_ROOT.child(NODE_USERS).child(UID).child("storiesCount").setValue(storiesCount.toString())
-                    e = false
-                }
+                var res = snapshot.value.toString()
+                var storiesCount = res.toInt()
+                storiesCount+=1
+                DATABASE_ROOT.child(NODE_USERS).child(UID).child("storiesCount").setValue(storiesCount.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -181,31 +177,28 @@ class HomeFragment : Fragment() {
 
         val stories: ArrayList<Story> = ArrayList<Story>()
         val comments: ArrayList<Comment> = ArrayList<Comment>()
-        var e = true
-        DATABASE_ROOT.child("Stories").addValueEventListener(object :
+
+        DATABASE_ROOT.child("Stories").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (e) {
-                    for (snapshot1: DataSnapshot in snapshot.children){
-                        val date = snapshot1.child("date").value.toString()
-                        val title = snapshot1.child("title").value.toString()
-                        val from = snapshot1.child("from").value.toString()
-                        val text = snapshot1.child("text").value.toString()
-                        val id = snapshot1.child("id").value.toString()
-                        val imageUrl = snapshot1.child("imageUrl").value.toString()
-                        val likes: HashMap<String, Any> = HashMap<String, Any> ()
-                        for (snapshot2: DataSnapshot in snapshot1.child("likes").children){
-                            likes.put(snapshot2.key.toString(), "")
-                        }
-                        stories.add(Story(likes, from, title, text, date, id, imageUrl))
+                for (snapshot1: DataSnapshot in snapshot.children){
+                    val date = snapshot1.child("date").value.toString()
+                    val title = snapshot1.child("title").value.toString()
+                    val from = snapshot1.child("from").value.toString()
+                    val text = snapshot1.child("text").value.toString()
+                    val id = snapshot1.child("id").value.toString()
+                    val imageUrl = snapshot1.child("imageUrl").value.toString()
+                    val likes: HashMap<String, Any> = HashMap<String, Any> ()
+                    for (snapshot2: DataSnapshot in snapshot1.child("likes").children){
+                        likes.put(snapshot2.key.toString(), "")
                     }
-
-                    Log.d("storiesCount", stories.size.toString())
-                    adapter = StoryAdapter(context, stories, false)
-                    recView?.adapter = adapter
-                    refreshHome.isRefreshing = false
-                    e = false
+                    stories.add(Story(likes, from, title, text, date, id, imageUrl))
                 }
+
+                Log.d("storiesCount", stories.size.toString())
+                adapter = StoryAdapter(context, stories, false)
+                recView?.adapter = adapter
+                refreshHome.isRefreshing = false
             }
 
             override fun onCancelled(error: DatabaseError) {}

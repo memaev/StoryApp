@@ -63,36 +63,33 @@ class NotificationsFragment : Fragment() {
 
     fun initializeRV(){
         var notificationList2: ArrayList<Notification> = ArrayList<Notification>()
-        var e = true
-        DATABASE_ROOT.child("Users").child(UID).child("notifications").addValueEventListener(object :
+
+        DATABASE_ROOT.child("Users").child(UID).child("notifications").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (e) {
-                    for (snapshot1: DataSnapshot in snapshot.children){
-                        val date = snapshot1.child("date").value.toString()
-                        val username = snapshot1.child("username").value.toString()
-                        val from = snapshot1.child("from").value.toString()
-                        val type = snapshot1.child("type").value.toString()
-                        val storyID = snapshot1.child("storyID").value.toString()
-                        val text = snapshot1.child("text").value.toString()
+                for (snapshot1: DataSnapshot in snapshot.children){
+                    val date = snapshot1.child("date").value.toString()
+                    val username = snapshot1.child("username").value.toString()
+                    val from = snapshot1.child("from").value.toString()
+                    val type = snapshot1.child("type").value.toString()
+                    val storyID = snapshot1.child("storyID").value.toString()
+                    val text = snapshot1.child("text").value.toString()
 
-                        notificationList2.add(Notification(type, from, username, storyID, date, text))
-                    }
-
-                    binding.notificationsRV.layoutManager = LinearLayoutManager(context)
-                    val adapter2 = NotificationsAdapter(context, notificationList2)
-                    binding.notificationsRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                    adapter = adapter2
-                    binding.notificationsRV.addItemDecoration(
-                        DividerItemDecoration(
-                            binding.notificationsRV.context,
-                            DividerItemDecoration.VERTICAL
-                        )
-                    )
-                    binding.notificationsRV.adapter = adapter
-                    binding.refreshNotifications.isRefreshing = false
-                    e = false
+                    notificationList2.add(Notification(type, from, username, storyID, date, text))
                 }
+
+                binding.notificationsRV.layoutManager = LinearLayoutManager(context)
+                val adapter2 = NotificationsAdapter(context, notificationList2)
+                binding.notificationsRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                adapter = adapter2
+                binding.notificationsRV.addItemDecoration(
+                    DividerItemDecoration(
+                        binding.notificationsRV.context,
+                        DividerItemDecoration.VERTICAL
+                    )
+                )
+                binding.notificationsRV.adapter = adapter
+                binding.refreshNotifications.isRefreshing = false
             }
 
             override fun onCancelled(error: DatabaseError) {}

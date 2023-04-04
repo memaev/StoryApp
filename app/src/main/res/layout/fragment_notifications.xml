@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="?actionBarSize"
+    android:background="@color/main_background"
     tools:context=".ui.notifications.NotificationsFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/refresh_notifications"
-        android:layout_marginBottom="56dp">
+        android:id="@+id/refresh_notifications">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notificationsRV"
             android:layout_width="match_parent"
-            android:background="#F7F7F7"
+            android:background="@color/main_background"
             android:layout_height="match_parent"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

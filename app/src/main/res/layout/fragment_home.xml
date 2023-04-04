@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment"
-    android:background="#f1f1f1"
+    android:background="@color/main_background"
     android:paddingBottom="?actionBarSize"
     >
 
@@ -18,7 +18,7 @@
         android:id="@+id/storyRecView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E8EDF3"
+        android:background="@color/main_background"
         android:paddingTop="15dp" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

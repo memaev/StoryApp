@@ -58,28 +58,30 @@ class ProfileFragment : Fragment() {
 
         val stories: ArrayList<Story> = ArrayList<Story>()
         var e = true
-        DATABASE_ROOT.child("Users").child(UID).child("myStories").addValueEventListener(object :
+        DATABASE_ROOT.child("Users").child(UID).child("myStories").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (e) {
-                    for (snapshot1: DataSnapshot in snapshot.children){
-                        val date = snapshot1.child("date").value.toString()
-                        val title = snapshot1.child("title").value.toString()
-                        val from = snapshot1.child("from").value.toString()
-                        val text = snapshot1.child("text").value.toString()
-                        val id = snapshot1.child("id").value.toString()
-                        val imageUrl = snapshot1.child("imageUrl").value.toString()
-                        val likes: HashMap<String, Any> = HashMap<String, Any> ()
-                        for (snapshot2: DataSnapshot in snapshot1.child("likes").children){
-                            likes.put(snapshot2.key.toString(), "")
-                        }
+                for (snapshot1: DataSnapshot in snapshot.children){
+                    val date = snapshot1.child("date").value.toString()
+                    val title = snapshot1.child("title").value.toString()
+                    val from = snapshot1.child("from").value.toString()
+                    val text = snapshot1.child("text").value.toString()
+                    val id = snapshot1.child("id").value.toString()
+                    val imageUrl = snapshot1.child("imageUrl").value.toString()
+                    val likes: HashMap<String, Any> = HashMap<String, Any> ()
 
-                        stories.add(Story(likes, from, title, text, date, id, imageUrl))
-
+                    for (snapshot2: DataSnapshot in snapshot1.child("likes").children){
+                        likes.put(snapshot2.key.toString(), "")
                     }
 
-                    adapter = StoryAdapter(context, stories, true)
-                    recyclerView?.adapter = adapter
+                    stories.add(Story(likes, from, title, text, date, id, imageUrl))
+
+                }
+
+                adapter = StoryAdapter(context, stories, true)
+                recyclerView?.adapter = adapter
+                if (e) {
+
                     e = false
                     Log.d("storiesCount", "ajsc: ${stories.size}")
                 }
@@ -97,23 +99,18 @@ class ProfileFragment : Fragment() {
     }
 
     fun refreshProfile(){
-        var a = true
         DATABASE_ROOT.child("Users").child(UID)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (a) {
-                        val username = snapshot.child("username").value.toString()
-                        val bio = snapshot.child("bio").value.toString()
-                        val likes = snapshot.child("likes").value.toString()
-                        val storiesCount = snapshot.child("storiesCount").value.toString()
+                    val username = snapshot.child("username").value.toString()
+                    val bio = snapshot.child("bio").value.toString()
+                    val likes = snapshot.child("likes").value.toString()
+                    val storiesCount = snapshot.child("storiesCount").value.toString()
 
-                        binding!!.profileUsername.text = username
-                        binding!!.profileBio.text = bio
-                        binding!!.profileLikesCount.text = likes
-                        binding!!.profileStoriesCount.text = storiesCount
-
-                        a = false
-                    }
+                    binding!!.profileUsername.text = username
+                    binding!!.profileBio.text = bio
+                    binding!!.profileLikesCount.text = likes
+                    binding!!.profileStoriesCount.text = storiesCount
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
@@ -125,31 +122,28 @@ class ProfileFragment : Fragment() {
     fun initializeRecView(){
 
         val stories: ArrayList<Story> = ArrayList<Story>()
-        var e = true
-        DATABASE_ROOT.child("Users").child(UID).child("myStories").addValueEventListener(object :
+
+        DATABASE_ROOT.child("Users").child(UID).child("myStories").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (e) {
-                    for (snapshot1: DataSnapshot in snapshot.children){
-                        val date = snapshot1.child("date").value.toString()
-                        val title = snapshot1.child("title").value.toString()
-                        val from = snapshot1.child("from").value.toString()
-                        val text = snapshot1.child("text").value.toString()
-                        val id = snapshot1.child("id").value.toString()
-                        val imageUrl = snapshot1.child("imageUrl").value.toString()
-                        val likes: HashMap<String, Any> = HashMap<String, Any> ()
-                        for (snapshot2: DataSnapshot in snapshot1.child("likes").children){
-                            likes.put(snapshot2.key.toString(), "")
-                        }
-
-                        stories.add(Story(likes, from, title, text, date, id, imageUrl))
+                for (snapshot1: DataSnapshot in snapshot.children){
+                    val date = snapshot1.child("date").value.toString()
+                    val title = snapshot1.child("title").value.toString()
+                    val from = snapshot1.child("from").value.toString()
+                    val text = snapshot1.child("text").value.toString()
+                    val id = snapshot1.child("id").value.toString()
+                    val imageUrl = snapshot1.child("imageUrl").value.toString()
+                    val likes: HashMap<String, Any> = HashMap<String, Any> ()
+                    for (snapshot2: DataSnapshot in snapshot1.child("likes").children){
+                        likes.put(snapshot2.key.toString(), "")
                     }
 
-                    adapter = StoryAdapter(context, stories, true)
-                    recyclerView?.adapter = adapter
-                    binding?.refreshProfile?.isRefreshing = false
-                    e = false
+                    stories.add(Story(likes, from, title, text, date, id, imageUrl))
                 }
+
+                adapter = StoryAdapter(context, stories, true)
+                recyclerView?.adapter = adapter
+                binding?.refreshProfile?.isRefreshing = false
             }
 
             override fun onCancelled(error: DatabaseError) {}

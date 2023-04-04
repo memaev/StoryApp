@@ -13,10 +13,12 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.rishabhharit.roundedimageview.RoundedImageView
 import dem.corp.story.CommentActivity
 import dem.corp.story.R
 import dem.corp.story.models.Notification
@@ -64,8 +66,7 @@ import java.util.*
                 val builder = AlertDialog.Builder(holder.itemView.context)
 
                 //set the custom dialog layout
-                val customLayout: View =
-                    inflater.inflate(R.layout.story_item_notifications, null)
+                val customLayout: View = inflater.inflate(R.layout.story_item_notifications, null)
                 customLayout.setBackgroundResource(R.drawable.story_item_shape)
                 builder.setView(customLayout)
 
@@ -77,34 +78,30 @@ import java.util.*
                 val storyDate = dialog.findViewById<TextView>(R.id.tv_story_date)
                 val storyComment = dialog.findViewById<ImageButton>(R.id.comment_btn)
                 val storyRead = dialog.findViewById<ImageButton>(R.id.read_more)
+                val storyImage = dialog.findViewById<RoundedImageView>(R.id.story_image)
 
                 var k = true
                 DATABASE_ROOT.child("Stories").child(model.storyID.toString())
-                    .addValueEventListener(object : ValueEventListener {
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot2: DataSnapshot) {
-                            if (k){
-                                val date = snapshot2.child("date").value.toString()
-                                val title = snapshot2.child("title").value.toString()
+                            val date = snapshot2.child("date").value.toString()
+                            val title = snapshot2.child("title").value.toString()
+                            val imageUrl = snapshot2.child("imageUrl").value.toString()
 
-                                storyDate!!.text = if (date != "") {
-                                    val firstFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
-                                    var period = Period.between(
-                                        LocalDate.parse(date, firstFormatter),
-                                        LocalDate.parse(
-                                            SimpleDateFormat("dd.MM.yyyy hh:mm").format(Date()),
-                                            firstFormatter
-                                        )
-                                    )
-                                    if (period.months != 0) period.months.toString() + " months ago"
-                                    else if (period.days != 0) period.days.toString() + " days ago"
-                                    else "today"
-                                } else "today"
+                            Glide.with(holder.itemView.context).load(imageUrl).into(storyImage)
 
-                                storyTitle!!.text = title
-                                dialog.show()
+                            storyDate!!.text = if (date != "") {
+                                val firstFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
 
-                                k = false
-                            }
+                                var period = Period.between(LocalDate.parse(date, firstFormatter), LocalDate.parse(SimpleDateFormat("dd.MM.yyyy hh:mm").format(Date()), firstFormatter))
+
+                                if (period.months != 0) period.months.toString() + " months ago"
+                                else if (period.days != 0) period.days.toString() + " days ago"
+                                else "today"
+                            } else "today"
+
+                            storyTitle!!.text = title
+                            dialog.show()
                         }
 
                         override fun onCancelled(error: DatabaseError) {}
@@ -120,6 +117,8 @@ import java.util.*
                     val storyDate = dialog.findViewById<TextView>(R.id.tv_btm_shed_date)
                     val storyFrom = dialog.findViewById<TextView>(R.id.story_from)
                     val storyClose = dialog.findViewById<ImageButton>(R.id.dialog_close)
+                    val storyImage = dialog.findViewById<RoundedImageView>(R.id.story_image)
+
 
                     dialog.show()
                     dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -134,41 +133,39 @@ import java.util.*
                     val key = model.storyID.toString()
                     var e = true
                     FirebaseDatabase.getInstance().getReference("Stories").child(key)
-                        .addValueEventListener(object : ValueEventListener {
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
-                                if (e) {
-                                    val text = snapshot.child("text").value.toString()
-                                    val title = snapshot.child("title").value.toString()
-                                    val date = snapshot.child("date").value.toString()
-                                    val from = snapshot.child("from").value.toString()
-                                    DATABASE_ROOT.child(NODE_USERS).child(from).child("username").addValueEventListener(object: ValueEventListener{
-                                        override fun onDataChange(snapshot: DataSnapshot) {
-                                            storyFrom!!.text = snapshot.value.toString()
-                                        }
+                                val text = snapshot.child("text").value.toString()
+                                val title = snapshot.child("title").value.toString()
+                                val date = snapshot.child("date").value.toString()
+                                val from = snapshot.child("from").value.toString()
+                                val imageUrl = snapshot.child("imageUrl").value.toString()
 
-                                        override fun onCancelled(error: DatabaseError) {
-                                            TODO("Not yet implemented")
-                                        }
-                                    })
+                                DATABASE_ROOT.child(NODE_USERS).child(from).child("username").addValueEventListener(object: ValueEventListener{
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        storyFrom!!.text = snapshot.value.toString()
+                                    }
 
-                                    storyText!!.text = text
-                                    storyTitle!!.text = title
-                                    Log.d("TAG", date)
-                                    storyDate!!.text = if (model.date != "") {
-                                        val firstFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
-                                        var period = Period.between(
-                                            LocalDate.parse(model.date, firstFormatter),
-                                            LocalDate.parse(
-                                                SimpleDateFormat("dd.MM.yyyy hh:mm").format(Date()),
-                                                firstFormatter
-                                            )
-                                        )
-                                        if (period.months != 0) period.months.toString() + " months ago"
-                                        else if (period.days != 0) period.days.toString() + " days ago"
-                                        else "today"
-                                    } else "today"
-                                    e = false
-                                }
+                                    override fun onCancelled(error: DatabaseError) {
+
+                                    }
+                                })
+
+                                Glide.with(holder.itemView.context).load(imageUrl).into(storyImage)
+
+                                storyText!!.text = text
+                                storyTitle!!.text = title
+
+                                storyDate!!.text = if (model.date != "") {
+                                    val firstFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
+                                    var period = Period.between(
+                                        LocalDate.parse(model.date, firstFormatter),
+                                        LocalDate.parse(SimpleDateFormat("dd.MM.yyyy hh:mm").format(Date()), firstFormatter))
+
+                                    if (period.months != 0) period.months.toString() + " months ago"
+                                    else if (period.days != 0) period.days.toString() + " days ago"
+                                    else "today"
+                                } else "today"
                             }
                             override fun onCancelled(error: DatabaseError) {}
                         })
@@ -197,20 +194,16 @@ import java.util.*
                 }
             }
         }else{
-            var e = true
-            DATABASE_ROOT.child("Stories").child(model.storyID.toString()).child("title")
-                .addValueEventListener(object : ValueEventListener {
+            DATABASE_ROOT.child("Stories").child(model.storyID.toString())
+                .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot2: DataSnapshot) {
-                        if (e){
-                            var storyTitle = snapshot2.value.toString()
-                            var username = model.username
-                            holder.text.text = "$username commented your story: $storyTitle"
-                            holder.date.text = model.date.toString()
-                            e = false
-                            holder.comment.visibility = View.VISIBLE
-                            holder.comment.text = "See comment"
+                        var storyTitle = snapshot2.child("title").value.toString()
 
-                        }
+                        var username = model.username
+                        holder.text.text = "$username commented your story: $storyTitle"
+                        holder.date.text = model.date.toString()
+                        holder.comment.visibility = View.VISIBLE
+                        holder.comment.text = "See comment"
                     }
 
                     override fun onCancelled(error: DatabaseError) {}
@@ -221,8 +214,7 @@ import java.util.*
                 val builder = AlertDialog.Builder(holder.itemView.context)
 
                 //set the custom dialog layout
-                val customLayout: View =
-                    inflater.inflate(R.layout.story_item_notifications, null)
+                val customLayout: View = inflater.inflate(R.layout.story_item_notifications, null)
                 customLayout.setBackgroundResource(R.drawable.story_item_shape)
                 builder.setView(customLayout)
 
@@ -234,41 +226,96 @@ import java.util.*
                 val storyDate = dialog.findViewById<TextView>(R.id.tv_story_date)
                 val storyComment = dialog.findViewById<ImageButton>(R.id.comment_btn)
                 val storyRead = dialog.findViewById<ImageButton>(R.id.read_more)
+                val storyImage = dialog.findViewById<RoundedImageView>(R.id.story_image)
 
                 var k = true
                 DATABASE_ROOT.child("Stories").child(model.storyID.toString())
-                    .addValueEventListener(object : ValueEventListener {
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot2: DataSnapshot) {
-                            if (k){
-                                val date = snapshot2.child("date").value.toString()
-                                val title = snapshot2.child("title").value.toString()
+                            val date = snapshot2.child("date").value.toString()
+                            val title = snapshot2.child("title").value.toString()
+                            val imageUrl = snapshot2.child("imageUrl").value.toString()
+                            Glide.with(storyImage).load(imageUrl).into(storyImage)
 
-                                storyDate!!.text = if (date != "") {
-                                    val firstFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
-                                    var period = Period.between(
-                                        LocalDate.parse(date, firstFormatter),
-                                        LocalDate.parse(
-                                            SimpleDateFormat("dd.MM.yyyy hh:mm").format(Date()),
-                                            firstFormatter
-                                        )
-                                    )
-                                    if (period.months != 0) period.months.toString() + " months ago"
-                                    else if (period.days != 0) period.days.toString() + " days ago"
-                                    else "today"
-                                } else "today"
+                            storyDate!!.text = if (date != "") {
+                                val firstFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
+                                var period = Period.between(LocalDate.parse(date, firstFormatter), LocalDate.parse(SimpleDateFormat("dd.MM.yyyy hh:mm").format(Date()), firstFormatter))
 
-                                storyTitle!!.text = title
-                                dialog.show()
 
-                                k = false
-                            }
+                                if (period.months != 0) period.months.toString() + " months ago"
+                                else if (period.days != 0) period.days.toString() + " days ago"
+                                else "today"
+                            } else "today"
+
+                            storyTitle!!.text = title
+                            dialog.show()
                         }
 
                         override fun onCancelled(error: DatabaseError) {}
                     })
 
                 storyRead.setOnClickListener {
-                    Log.d("comment story log", "read story btn clicked")
+                    val dialog = Dialog(it.context)
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    dialog.setContentView(R.layout.read_story_bottom_sheet)
+
+                    val storyText = dialog.findViewById<TextView>(R.id.story_txt)
+                    val storyTitle = dialog.findViewById<TextView>(R.id.story_title)
+                    val storyDate = dialog.findViewById<TextView>(R.id.tv_btm_shed_date)
+                    val storyFrom = dialog.findViewById<TextView>(R.id.story_from)
+                    val storyClose = dialog.findViewById<ImageButton>(R.id.dialog_close)
+                    val storyImage = dialog.findViewById<RoundedImageView>(R.id.story_image)
+
+
+                    dialog.show()
+                    dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+                    dialog.window?.setGravity(Gravity.BOTTOM)
+
+                    storyClose.setOnClickListener {
+                        dialog.dismiss()
+                    }
+
+                    val key = model.storyID.toString()
+
+                    FirebaseDatabase.getInstance().getReference("Stories").child(key)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                val text = snapshot.child("text").value.toString()
+                                val title = snapshot.child("title").value.toString()
+                                val date = snapshot.child("date").value.toString()
+                                val from = snapshot.child("from").value.toString()
+                                val imageUrl = snapshot.child("imageUrl").value.toString()
+
+                                DATABASE_ROOT.child(NODE_USERS).child(from).child("username").addValueEventListener(object: ValueEventListener{
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        storyFrom!!.text = snapshot.value.toString()
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+
+                                    }
+                                })
+
+                                Glide.with(holder.itemView.context).load(imageUrl).into(storyImage)
+
+                                storyText!!.text = text
+                                storyTitle!!.text = title
+
+                                storyDate!!.text = if (model.date != "") {
+                                    val firstFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
+                                    var period = Period.between(
+                                        LocalDate.parse(model.date, firstFormatter),
+                                        LocalDate.parse(SimpleDateFormat("dd.MM.yyyy hh:mm").format(Date()), firstFormatter))
+
+                                    if (period.months != 0) period.months.toString() + " months ago"
+                                    else if (period.days != 0) period.days.toString() + " days ago"
+                                    else "today"
+                                } else "today"
+                            }
+                            override fun onCancelled(error: DatabaseError) {}
+                        })
                 }
 
                 storyComment.setOnClickListener {
@@ -302,8 +349,7 @@ import java.util.*
                 // set the custom dialog layout
 
                 // set the custom dialog layout
-                val customLayout: View =
-                    inflater.inflate(R.layout.item_comment, null)
+                val customLayout: View = inflater.inflate(R.layout.item_comment, null)
                 customLayout.setBackgroundResource(R.drawable.create_story_dialog_shape)
                 builder.setView(customLayout)
 

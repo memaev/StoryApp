@@ -7,11 +7,13 @@
     android:background="#F1F1F1"
     tools:context=".ui.profile.ProfileFragment"
     android:id="@+id/refresh_profile"
+    android:paddingBottom="?actionBarSize"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/main_background"
         >
 
         <RelativeLayout
@@ -28,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:layout_marginStart="40dp"
-                android:background="#f1f1f1"
+                app:tint="@color/text_color"
+                android:background="@color/main_background"
                 android:src="@drawable/ic_logout" />
 
             <ImageButton
@@ -38,7 +41,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="40dp"
-                android:background="#f1f1f1"
+                app:tint="@color/text_color"
+                android:background="@color/main_background"
                 android:src="@drawable/ic_settings" />
 
             <ImageView
@@ -47,6 +51,7 @@
                 android:src="@drawable/ic_profile"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
+                app:tint="@color/text_color"
                 android:id="@+id/profile_image"
                 />
 
@@ -55,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="Ivan Ivanov"
                 android:textSize="25sp"
+                android:textColor="@color/text_color"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/profile_image"
                 android:layout_marginTop="15dp"
@@ -66,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:text="Programmer"
                 android:textSize="14sp"
+                android:textColor="@color/date_color_text"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/profile_username"
                 android:layout_marginTop="5dp"
@@ -78,6 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/profile_relative"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp">
 
@@ -98,6 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="57"
+                        android:textColor="@color/date_color_text"
                         android:textSize="16sp"
                         android:layout_centerHorizontal="true"
                         />
@@ -105,6 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="STORIES"
+                        android:textColor="@color/date_color_text"
                         android:layout_below="@+id/profile_stories_count"
                         android:layout_centerHorizontal="true"
                         android:textSize="10sp"
@@ -114,7 +124,7 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#000"
+                    android:background="@color/divider_color"
                     android:layout_marginLeft="30dp"/>
 
                 <RelativeLayout
@@ -127,6 +137,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="104"
+                        android:textColor="@color/date_color_text"
                         android:textSize="16sp"
                         android:layout_centerHorizontal="true"
                         />
@@ -134,6 +145,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="LIKES"
+                        android:textColor="@color/date_color_text"
                         android:layout_below="@+id/profile_likes_count"
                         android:layout_centerHorizontal="true"
                         android:textSize="10sp"

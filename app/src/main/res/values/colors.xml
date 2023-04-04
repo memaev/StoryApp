@@ -11,4 +11,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="main_background"> #f1f1f1 </color>
+    <color name="bottom_nav_color"> #fafafa </color>
+    <color name="text_color">#222222</color>
+    <color name="date_color_text">#B341485D</color>
+    <color name="white_background_color">#fff</color>
+    <color name="divider_color">#7F7D7D</color>
+
 </resources>

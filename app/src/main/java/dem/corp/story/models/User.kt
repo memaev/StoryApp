@@ -9,6 +9,7 @@ data class User(
                 var bio: String,
                 val password: String,
                 var likes: Long = 0,
+                var storiesCount: Long = 0,
                 var myStories: ArrayList<Story> = ArrayList()
 ){
     fun asHashMap(): HashMap<String, Any> {
@@ -19,6 +20,7 @@ data class User(
         map[CHILD_BIO] = this.bio
         map[CHILD_PASSWORD] = this.password
         map[CHILD_LIKES] = this.likes
+        map[CHILD_STORIES_COUNT] = this.storiesCount
         map[CHILD_MY_STORIES] = this.storiesToHashMap()
 
         return map
